@@ -11,15 +11,9 @@ Project PRM392 is a mobile application developed as part of an educational cours
 - Navigation between activities (e.g., MainActivity, LoginActivity)
 
 ## Technologies Used
-- **Java** (100%)
-- **Firebase** for authentication and database
+- **C# (Backend) , JAVA (Application)**
+- **Microsoft SQL Server** for authentication and database
 - **Android Studio** for development
-
-## Getting Started
-1. Clone this repository: git clone https://github.com/khoahocmai/project-prm392.git
-2. Open the project in Android Studio.
-3. Configure Firebase settings as needed.
-4. Run the app on an emulator or device.
 
 ## Installation
 - Ensure **Java JDK** and **Android Studio** are installed.
