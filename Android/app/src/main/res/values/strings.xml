@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Project PRM392</string>
+    <string name="my_map_api_key">AIzaSyAhKdlpg0t2Q33IDz55I4-m9QDVPy2CBDE</string>
+    <string name="register_title">Sign Up</string>
+    <string name="register_username">Username</string>
+    <string name="register_password">Password</string>
+    <string name="register_password_confirm">Password confirm</string>
+    <string name="register_email">Email</string>
+    <string name="register_phone">Phone number</string>
+    <string name="register_signup">SIGN UP</string>
+    <string name="register_signin">Already have an account? Sign In.</string>
+    <string name="register_toolbar_title">Eatery food review app</string>
+    <string name="register_icon_person">User icon</string>
+    <string name="register_icon_lock">Lock icon</string>
+    <string name="register_icon_email">Email icon</string>
+    <string name="register_icon_phone">Phone icon</string>
+</resources>

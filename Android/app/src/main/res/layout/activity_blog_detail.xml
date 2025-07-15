@@ -1,0 +1,338 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.BlogDetailActivity">
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F0FDF4"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pr_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Nội dung bài viết"
+            android:textColor="#0BAE77"
+            android:textSize="26sp" />
+
+        <ImageView
+            android:id="@+id/menu_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_menu_24"
+            android:layout_marginStart="24dp"
+            android:padding="8dp"
+            android:background="?android:attr/selectableItemBackground" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/btnAddToCart"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/blogCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- Image Carousel Container -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginBottom="12dp">
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/imageViewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_image_background" />
+
+                    <!-- Page Indicators -->
+                    <LinearLayout
+                        android:id="@+id/pageIndicators"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal" />
+
+                    <!-- Image Counter -->
+                    <TextView
+                        android:id="@+id/imageCounter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_margin="12dp"
+                        android:background="@drawable/rounded_background_dark"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="4dp"
+                        android:text="1/1"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/blogName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Title bài viết"
+                    android:textColor="#333333"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/blogDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:lineSpacingExtra="4dp"
+                    android:text="Nội dung review"
+                    android:textColor="#6D6D6D"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/blogPrice"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Date Time"
+                        android:textColor="#305F72"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/blogCalories"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="200 kcal"
+                        android:visibility="invisible"
+                        android:textColor="#305F72"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <!-- Rating Section with Sliders -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Đánh giá chi tiết (0-5 điểm)"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#333"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Food Quality Rating -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Chất lượng món ăn"
+                        android:textSize="14sp"
+                        android:textColor="#666"
+                        android:layout_marginBottom="4dp"/>
+
+                    <SeekBar
+                        android:id="@+id/foodQualityRate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="5"
+                        android:progress="0"
+                        android:enabled="false"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:progressTint="#FF6B35"
+                        android:thumbTint="#FF6B35"
+                        android:progressBackgroundTint="#E0E0E0"/>
+                </LinearLayout>
+
+                <!-- Environment Rating -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Không gian"
+                        android:textSize="14sp"
+                        android:textColor="#666"
+                        android:layout_marginBottom="4dp"/>
+
+                    <SeekBar
+                        android:id="@+id/environmentRate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="5"
+                        android:progress="0"
+                        android:enabled="false"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:progressTint="#4CAF50"
+                        android:thumbTint="#4CAF50"
+                        android:progressBackgroundTint="#E0E0E0"/>
+                </LinearLayout>
+
+                <!-- Service Rating -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Phục vụ"
+                        android:textSize="14sp"
+                        android:textColor="#666"
+                        android:layout_marginBottom="4dp"/>
+
+                    <SeekBar
+                        android:id="@+id/serviceRate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="5"
+                        android:progress="0"
+                        android:enabled="false"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:progressTint="#2196F3"
+                        android:thumbTint="#2196F3"
+                        android:progressBackgroundTint="#E0E0E0"/>
+                </LinearLayout>
+
+                <!-- Pricing Rating -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Giá cả"
+                        android:textSize="14sp"
+                        android:textColor="#666"
+                        android:layout_marginBottom="4dp"/>
+
+                    <SeekBar
+                        android:id="@+id/pricingRate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="5"
+                        android:progress="0"
+                        android:enabled="false"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:progressTint="#FF9800"
+                        android:thumbTint="#FF9800"
+                        android:progressBackgroundTint="#E0E0E0"/>
+                </LinearLayout>
+
+                <!-- Hygiene Rating -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Vệ sinh"
+                        android:textSize="14sp"
+                        android:textColor="#666"
+                        android:layout_marginBottom="4dp"/>
+
+                    <SeekBar
+                        android:id="@+id/hygieneRate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="5"
+                        android:progress="0"
+                        android:enabled="false"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:progressTint="#9C27B0"
+                        android:thumbTint="#9C27B0"
+                        android:progressBackgroundTint="#E0E0E0"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnAddToCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_navigation"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="#22C55E"
+        android:text="Thêm vào bookmark"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:padding="14dp"
+        android:textStyle="bold" />
+
+    <!-- Bottom Navigation View -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:background="#23c55e"
+        app:menu="@menu/bottom_navigation_menu" />
+</RelativeLayout>
