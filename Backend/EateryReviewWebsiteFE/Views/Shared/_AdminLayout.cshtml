@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"]</title>
+
+	<!-- Favicon -->
+	<link rel="icon" href="favicon.ico" type="image/x-icon" />
+	<link data-n-head="ssr" rel="icon" type="image/x-icon" href="/favicon.png" />
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+	<!-- ASP.NET and Site Styles -->
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/EateryReviewWebsiteFE.styles.css" asp-append-version="true" />
+
+	<!-- External Libraries & Page Styles -->
+	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+	<link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+	<link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+	<link rel="stylesheet" href="css/nice-select.css" type="text/css">
+	<link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+	<link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+	<link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+	<!-- Canonical -->
+	<link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/badges/">
+
+	<!-- JS Scripts -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="/js/main.js"></script>
+
+	@RenderSection("Styles", required: false)
+</head>
+
+<body>
+	<!-- Sidebar -->
+	<div class="bg-dark text-white p-3"
+			style="position: fixed; top: 0; left: 0; width: 200px; height: 100vh; overflow-y: auto;">
+		<h5>Admin Panel</h5>
+		<hr />
+		<a href="/" class="btn btn-outline-light w-100 mb-2">← Back to Main Page</a>
+		<a href="@Url.Action("Dashboard", "Admin")" class="btn btn-outline-light w-100 mb-2">Dashboard</a>
+		<a href="@Url.Action("ManageModerators", "Admin")" class="btn btn-outline-light w-100 mb-2">Manage Moderators</a>
+	</div>
+
+	<!-- Main Content -->
+	<div style="margin-left: 200px; padding: 20px;">
+		@RenderBody()
+	</div>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+
+	@await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>

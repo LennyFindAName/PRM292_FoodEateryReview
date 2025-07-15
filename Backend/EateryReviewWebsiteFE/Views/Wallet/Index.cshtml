@@ -1,0 +1,185 @@
+﻿@{
+	ViewData["Title"] = "Wallet";
+}
+<link href="https://fonts.googleapis.com/css?family=Quicksand:400,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="~/css/wallet.css" />
+<div class="wallet-outer-container py-5">
+	<div class="wallet-center-wrap">
+		<div class="wallet-bg-pattern wallet-table-card wallet-wow-card">
+			<div class="wallet-header-flex d-flex align-items-center mb-4 flex-wrap justify-content-between">
+				<div class="wallet-balance-block d-flex align-items-center gap-3">
+					<span class="wallet-illustration wallet-illustration-wow">
+						<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Wallet Icon" />
+					</span>
+					<div>
+						<div class="wallet-balance-label">Số dư ví</div>
+						<div class="wallet-balance-amount"><span id="wallet-balance">0</span> <span
+								class="wallet-currency">VNĐ</span></div>
+					</div>
+				</div>
+				<button type="button" class="wallet-action-btn wallet-action-btn-wow" data-toggle="modal"
+					data-target="#depositModal">
+					<i class="fa fa-plus-circle"></i> Nạp tiền
+				</button>
+			</div>
+			<hr />
+			<div class="wallet-history-section">
+				<div class="d-flex align-items-center mb-2">
+					<i class="fa fa-history wallet-history-icon me-2"></i>
+					<span class="wallet-history-title">Lịch sử giao dịch</span>
+				</div>
+				<div class="table-responsive wallet-table-responsive">
+					<table class="table wallet-history-table wallet-history-table-wow" id="transaction-table">
+						<thead>
+							<tr>
+								<th>Ngày</th>
+								<th>Số tiền (VNĐ)</th>
+								<th>Trạng thái</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+					<div id="wallet-pagination"
+						class="wallet-pagination d-flex justify-content-end align-items-center mt-3"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal nạp tiền -->
+<div class="modal fade" id="depositModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<form id="deposit-form">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title"><i class="fa fa-plus-circle"></i> Nạp tiền vào ví</h5>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<label class="wallet-label">Số tiền (VNĐ):</label>
+					<input type="number" class="form-control" id="amount-input" required min="1000" step="1000"
+						placeholder="Nhập số tiền muốn nạp..." />
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-light" data-dismiss="modal">Hủy</button>
+					<button type="submit" class="wallet-action-btn">Nạp</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts {
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		const token = localStorage.getItem("accessToken");
+		if (!token) {
+			alert("Bạn cần đăng nhập để truy cập ví.");
+			window.location.href = "/authen";
+		}
+		let allTransactions = [];
+		let currentPage = 1;
+		const pageSize = 5;
+		$(document).ready(function () {
+			loadBalance();
+			loadHistory();
+			$("#deposit-form").submit(function (e) {
+				e.preventDefault();
+				const amount = parseInt($("#amount-input").val());
+				if (!amount || amount < 1000) return alert("Số tiền không hợp lệ");
+				$.ajax({
+					url: "http://localhost:5029/api/payos/create-payment",
+					method: "POST",
+					contentType: "application/json",
+					headers: { Authorization: "Bearer " + token },
+					data: JSON.stringify({ amount }),
+					success: function (res) {
+						const json = typeof res === "string" ? JSON.parse(res) : res;
+						if (json.code === "00") {
+							const url = json.data.checkoutUrl;
+							window.location.href = url;
+						} else {
+							alert("Lỗi: " + json.desc);
+						}
+					},
+					error: function () {
+						alert("Giao dịch thất bại!");
+					}
+				});
+			});
+		});
+		function loadBalance() {
+			$.ajax({
+				url: "http://localhost:5029/api/payos/balance",
+				headers: { Authorization: "Bearer " + token },
+				success: function (res) {
+					$("#wallet-balance").text(res.balance.toLocaleString());
+				}
+			});
+		}
+		function loadHistory() {
+			$.ajax({
+				url: "http://localhost:5029/api/payos/history",
+				headers: { Authorization: "Bearer " + token },
+				success: function (res) {
+					allTransactions = res;
+					currentPage = 1;
+					renderHistoryPage();
+				}
+			});
+		}
+		function renderHistoryPage() {
+			const start = (currentPage - 1) * pageSize;
+			const end = start + pageSize;
+			const pageData = allTransactions.slice(start, end);
+			let rows = "";
+			pageData.forEach(item => {
+				const date = new Date(item.transactionDate).toLocaleDateString();
+				let statusHtml = "";
+				let trClass = "";
+				if (item.transactionStatus === "Success") {
+					statusHtml = '<span class="wallet-status-success"><i class="fa fa-check-circle"></i> Thành công</span>';
+					trClass = 'status-success';
+				}
+				// else if (item.transactionStatus === "Failed") {
+				// 	statusHtml = '<span class="wallet-status-failed"><i class="fa fa-times-circle"></i> Thất bại</span>';
+				// 	trClass = 'status-failed';
+				// } else {
+				// 	statusHtml = '<span class="wallet-status-pending"><i class="fa fa-clock-o"></i> Chờ xử lý</span>';
+				// 	trClass = 'status-pending';
+				// }
+				else {
+					statusHtml = '<span class="wallet-status-failed"><i class="fa fa-times-circle"></i> Thất bại</span>';
+					trClass = 'status-failed';
+				}
+				rows += `<tr class="${trClass}">
+			                        <td>${date}</td>
+			                        <td>${item.amount.toLocaleString()}</td>
+			                        <td>${statusHtml}</td>
+			                    </tr>`;
+			});
+			$("#transaction-table tbody").html(rows);
+			renderPagination();
+		}
+		function renderPagination() {
+			const totalPages = Math.ceil(allTransactions.length / pageSize);
+			let html = '';
+			if (totalPages > 1) {
+				html += `<button class="btn btn-nav" ${currentPage === 1 ? 'disabled' : ''} onclick="goToPage(${currentPage - 1})">&laquo; Trước</button>`;
+				for (let i = 1; i <= totalPages; i++) {
+					html += `<button class="btn btn-page ${i === currentPage ? 'btn-page-active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+				}
+				html += `<button class="btn btn-nav" ${currentPage === totalPages ? 'disabled' : ''} onclick="goToPage(${currentPage + 1})">Sau &raquo;</button>`;
+			}
+			$("#wallet-pagination").html(html);
+		}
+		window.goToPage = function (page) {
+			const totalPages = Math.ceil(allTransactions.length / pageSize);
+			if (page < 1 || page > totalPages) return;
+			currentPage = page;
+			renderHistoryPage();
+		}
+	</script>
+}

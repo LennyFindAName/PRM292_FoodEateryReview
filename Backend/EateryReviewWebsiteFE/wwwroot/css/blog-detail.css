@@ -1,0 +1,284 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jun 17, 2024, 12:33:20 AM
+    Author     : legion
+*/
+
+.fa-heart-o {
+    color: black;
+}
+.fa-heart {
+    color: red;
+}
+
+.bookmark-icon {
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.bookmark-icon:hover {
+    color: #f5c842;
+}
+
+.bookmark-icon:hover::before {
+    content: "\f02e";
+    font-family: FontAwesome;
+}
+
+.bookmarked {
+    color: #f5c842;
+    cursor: pointer;
+}
+.bookmarked::before {
+    content: "\f02e";
+    font-family: FontAwesome;
+}
+
+.carousel {
+    margin-bottom: 20px;
+}
+
+.carousel .item img {
+    border-radius: 10px;
+    border: 2px solid #ddd;
+}
+
+.blog__details__hero__text h2 {
+    font-size: 36px;
+    font-weight: 600;
+    color: #333;
+}
+
+.blog__details__hero__text ul li {
+    display: inline-block;
+    margin-right: 15px;
+    color: #999;
+}
+
+.blog__details__content {
+    border: 1px solid #eaeaea;
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+
+
+
+}
+.blog__details__content h3 {
+    font-size: 24px;
+    font-weight: bold; /* In đậm */
+    margin-bottom: 10px;
+}
+
+
+.blog__details__content p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #555;
+
+}
+
+.blog__details__description {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    position: relative;
+}
+
+.blog__details__description.collapsed {
+    max-height: 380px;
+    overflow: hidden;
+}
+
+.read-more {
+    display: block;
+    margin-top: 10px;
+    cursor: pointer;
+    color: #007bff;
+}
+
+.profile-card {
+    border: 1px solid #eaeaea;
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-card img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+}
+
+.profile-card h4 {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.profile-card p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.profile-card .badges {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.profile-card .stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.profile-card .stats div {
+    text-align: center;
+}
+
+.profile-card .stats div h5 {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.profile-card .stats div p {
+    margin: 0;
+    color: #999;
+}
+.rating-section {
+    border: 1px solid #eaeaea;
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+    text-align: left;
+    margin-top: 20px;
+}
+.rating-section h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+.rating-section .overall-rating {
+    display: flex;
+    align-items: center;
+}
+.rating-section .overall-rating span {
+    font-size: 30px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+.rating-section .overall-rating i {
+    font-size: 24px;
+    color: #ffc107;
+}
+.rating-section p {
+    margin: 0;
+    color: #666;
+}
+.rating-section .individual-ratings {
+    margin-top: 10px;
+}
+.rating-section .individual-ratings div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.rating-section .individual-ratings div span {
+    flex: 1;
+}
+.rating-section .individual-ratings div .rating-bar {
+    flex: 3;
+    height: 10px;
+    background: #ddd;
+    border-radius: 5px;
+    margin: 0 10px;
+    position: relative;
+}
+.rating-section .individual-ratings div .rating-bar::after {
+    content: '';
+    height: 100%;
+    background: #ffc107;
+    border-radius: 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.tags {
+    border: 1px solid #eaeaea;
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+    text-align: left;
+    margin-top: 20px;
+}
+.tags h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+.tags .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.tags .tag {
+    background: #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+    color: #555;
+}
+
+.details {
+    border: 1px solid #eaeaea;
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+    text-align: left;
+    margin-top: 20px;
+}
+
+.details h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+/* Định dạng cho nút Bookmark */
+#bookmarkBtn {
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#bookmarkBtn:hover {
+    opacity: 0.8;
+}
+
+#bookmarkBtn:focus {
+    outline: none;
+}
+
+/* Định dạng cho nút Report */
+#reportButton {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#reportButton:hover {
+    opacity: 0.8;
+}
+
+#reportButton:focus {
+    outline: none;
+}

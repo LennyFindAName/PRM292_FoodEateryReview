@@ -1,0 +1,6 @@
+@EateryReviewWebsiteBE_HostAddress = http://localhost:5029
+
+GET {{EateryReviewWebsiteBE_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

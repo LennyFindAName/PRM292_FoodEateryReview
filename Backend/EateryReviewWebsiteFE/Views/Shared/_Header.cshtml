@@ -1,0 +1,66 @@
+<header class="header">
+	<div class="header__top">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-md-6">
+					<div class="header__top__left">
+						<ul>
+							<li><i class="fa fa-envelope"></i> holaeatery@gmail.com</li>
+							<li>Review Quán ăn khắp Việt Nam</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6">
+					<div class="header__top__right">
+						<!-- Hiển thị khi đã đăng nhập -->
+						<div id="loggedInSection" style="display:none;">
+							<div class="header__top__right__auth">
+								<a id="usernameDisplay" style="margin-right:5px"></a>
+							</div>
+							<div class="header__top__right__social">
+								<a href="/Wallet"><i class="fa fa-wallet"></i> Ví</a>
+								<a href="#"><i class="fa fa-bell"></i> Thông báo</a>
+								<a href="#" id="profileLink"><i class="fa fa-user"></i> Cá nhân</a>
+								<a href="javascript:void(0);" onclick="logout()"><i class="fa fa-sign-out"></i> Đăng Xuất</a>
+							</div>
+						</div>
+
+						<!-- Hiển thị khi chưa đăng nhập -->
+						<div id="guestSection" style="display:none;">
+							<div class="header__top__right__social">
+								<a href="/Authen"><i class="fa fa-user"></i> Đăng Nhập</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-2">
+				<div class="header__logo">
+					<a href="/"><img src="/img/logo-new.png" alt="Logo" style="width: 150px; height:auto"></a>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<nav class="header__menu">
+					<ul>
+						<li><a href="/"><i class="fa fa-home"></i> Trang Chủ</a></li>
+						<li><a href="/Wallet"><i class="fa fa-home"></i> Wallet</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="col-lg-4">
+				<div class="hero__search__form">
+					<form asp-controller="Search" asp-action="Index" method="get">
+						<div class="hero__search__categories">
+							<i class="fa fa-search"></i>
+						</div>
+						<input type="text" name="query" placeholder="Bạn muốn tìm gì ?">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>

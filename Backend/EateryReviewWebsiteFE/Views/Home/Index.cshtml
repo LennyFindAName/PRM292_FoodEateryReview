@@ -1,0 +1,458 @@
+﻿@{
+	Layout = "_Layout";
+	ViewData["Title"] = "Home";
+}
+
+
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="Ogani Template">
+	<meta name="keywords" content="Ogani, unica, creative, html">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>HomePage</title>
+
+	<style>
+		.fixed-header {
+			position: fixed;
+			top: 0;
+			width: 100%;
+			z-index: 1000;
+			background-color: white;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		}
+
+		.featured__item {
+			background-color: white;
+			border: 1px solid lightgrey;
+			border-radius: 15px;
+			padding-bottom: 15px;
+			margin: 15px 0;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			text-align: center;
+		}
+
+		.featured__item__pic img {
+			width: 300px;
+			height: 300px;
+			object-fit: cover;
+			border-radius: 15px;
+		}
+
+		.featured__item__text {
+			margin-top: 10px;
+		}
+
+		h2 {
+			font-weight: bold;
+		}
+
+		.explore-tab {
+			border-radius: 20px;
+		}
+
+		.list-group-menu li {
+			background: lightgrey;
+			border-radius: 15px;
+		}
+
+		.empty-text {
+			right: 1000px;
+		}
+
+		.details img {
+			border-radius: 50%;
+			width: 50px;
+			height: 50px;
+		}
+
+		#blogTitle {
+			text-align: left;
+			margin-left: 20px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			max-width: 100%;
+			display: block;
+		}
+
+		/* Pagination styling */
+		.listPage {
+			display: flex;
+			justify-content: center;
+			list-style: none;
+			padding: 0;
+			margin: 30px 0;
+		}
+
+			.listPage li {
+				margin: 0 5px;
+				display: inline-block;
+			}
+
+				.listPage li a {
+					display: block;
+					padding: 8px 15px;
+					border-radius: 5px;
+					color: #333;
+					text-decoration: none;
+					transition: all 0.3s ease;
+				}
+
+				.listPage li.active a {
+					background-color: #7fad39 !important;
+					color: white;
+				}
+
+				.listPage li a:hover {
+					background-color: #ddd;
+				}
+
+				.listPage li.active a:hover {
+					background-color: #6a9230 !important;
+				}
+
+			.listPage .active {
+				background-color: white !important;
+				color: #fff;
+			}
+	</style>
+</head>
+
+
+
+<body style="max-width: 100%;overflow-x: hidden">
+	<!-- Blog List -->
+	<script>
+		$(document).ready(function() {
+			let currentPage = 1;
+			const pageSize = 8;
+			let totalItems = 0;
+
+			function loadBlogs(page) {
+				const apiUrl = `http://localhost:5029/api/Blog?page=${page}&pageSize=${pageSize}`;
+				$('#preloder').show();
+
+				$('#blogItemList').fadeTo(200, 0.3, function() {
+					$('#blogItemList').find('.mix:not(#blogItem)').remove();
+
+					$.ajax({
+						url: apiUrl,
+						type: 'GET',
+						dataType: 'json',
+						cache: false,
+						success: function(response) {
+							$('#preloder').hide();
+							const data = response.blogs || [];
+							totalItems = response.totalCount || 0;
+
+							if (data.length > 0) {
+								$('#emptyBlogText').hide();
+
+								data.forEach(function(blog) {
+									const blogItem = $('#blogItem').clone();
+									blogItem.attr('id', 'blog-' + blog.blogId);
+									blogItem.find('> a').attr('href', '/Blog/Details?id=' + blog.blogId);
+									const blogImage = blog.firstImage ? 'data:image/jpeg;base64,' + blog.firstImage : 'https://via.placeholder.com/300';
+									if (blog.firstImage) {
+										blogItem.find('#blogFirstImage img').attr('src', blogImage);
+									}
+
+									blogItem.find('#blogTitle').html(
+										'<a href="/Blog/Details?id=' + blog.blogId + '">' + blog.blogTitle + '</a>'
+									);
+
+									blogItem.find('#blogFirstImage').html(
+										'<a href="/Blog/Details?id=' + blog.blogId + '">' +
+											'<img src="' + blogImage + '" alt="' + blog.blogTitle + '" >' +
+										'</a>'
+									);
+
+									blogItem.find('#blogUsername').text(blog.username || 'Anonymous');
+									blogItem.find('#blogLike').text(blog.blogLike || 0);
+
+									blogItem.show();
+									$('#blogItemList').append(blogItem);
+								});
+
+								updatePagination(currentPage, pageSize, totalItems);
+							} else {
+								$('#emptyBlogText').show();
+							}
+
+							$('#blogItemList').fadeTo(200, 1);
+						},
+						error: function(xhr, status, error) {
+							$('#preloder').hide();
+							$('#emptyBlogText').show();
+							$('#emptyBlogText h4').text('Lỗi khi tải dữ liệu: ' + error);
+							$('#blogItemList').fadeTo(200, 1);
+							console.error('Error fetching blogs:', error);
+						}
+					});
+				});
+			}
+
+			// Initial load
+			loadBlogs(currentPage);
+
+			// Use event delegation for pagination links
+			$(document).on('click', '.listPage a.page-link', function(e) {
+				e.preventDefault();
+				const newPage = parseInt($(this).data('page'));
+				if (newPage !== currentPage) {
+					currentPage = newPage;
+					loadBlogs(currentPage);
+					$('html, body').animate({
+						scrollTop: $('#blogItemList').offset().top - 100
+					}, 200);
+				}
+			});
+
+			function updatePagination(currentPage, pageSize, totalItems) {
+				const totalPages = Math.ceil(totalItems / pageSize);
+				$('.listPage').empty();
+
+				if (currentPage > 1) {
+					$('.listPage').append(`
+						<li class="page-item">
+							<a class="page-link" href="#" data-page="${currentPage - 1}">
+								<i class="fa fa-angle-left"></i>
+							</a>
+						</li>
+					`);
+				}
+
+				const startPage = Math.max(1, currentPage - 2);
+				const endPage = Math.min(totalPages, startPage + 4);
+
+				for (let i = startPage; i <= endPage; i++) {
+					$('.listPage').append(`
+						<li class="page-item ${i === currentPage ? 'active' : ''}">
+							<a class="page-link" href="#" data-page="${i}">${i}</a>
+						</li>
+					`);
+				}
+
+				if (currentPage < totalPages) {
+					$('.listPage').append(`
+						<li class="page-item">
+							<a class="page-link" href="#" data-page="${currentPage + 1}">
+								<i class="fa fa-angle-right"></i>
+							</a>
+						</li>
+					`);
+				}
+			}
+		});
+	</script>
+
+	<!-- User Info -->
+	<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			// Add this: Load user info from JWT token
+			loadUserInfo();
+
+			function loadUserInfo() {
+				const userId = getUserIdFromToken();
+				if (!userId) {
+					// If no token or userId, hide or update the user info section
+					$('#userInfoContainer').html('<p>Please <a href="/User/Login">login</a> to see your profile</p>');
+					return;
+				}
+
+                // Call API to get full user details using the userId
+                $.ajax({
+                    url: `http://localhost:5029/api/Account?id=${userId}`,
+                    type: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+                    },
+                    success: function(user) {
+                      
+
+				// Call API to get full user details using the userId
+				$.ajax({
+					url: `http://localhost:5029/api/Account?id=${userId}`,
+					type: 'GET',
+					headers: {
+						'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+					},
+					success: function(user) {
+
+
+						$('#username').text(user.username || userId);
+
+						// Update user image if available
+						if (user.userImage) {
+							$('#userImage').attr('src', 'data:image/jpeg;base64,' + user.userImage);
+						}
+                        // Make the profile link point to the user's profile page
+                        $('#userInfoContainer a').attr('href', '/Profile?id=' + userId);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching user data:', error);
+                        $('#userInfoContainer').html('<p>Error loading profile. Please <a href="/User/Login">login</a> again.</p>');
+                    }
+                });
+            }
+
+						// Update user stats
+						// Assuming these come from the API response
+						$('#userTotalBlogCreated p:last-child').text(user.blogCount || 0);
+						$('#userFollowing p:last-child').text(user.followingCount || 0);
+						$('#userFollowed p:last-child').text(user.followedCount || 0);
+
+						// Make the profile link point to the user's profile page
+						$('#userInfoContainer a').attr('href', '/User/Profile?id=' + userId);
+					},
+					error: function(xhr, status, error) {
+						console.error('Error fetching user data:', error);
+						$('#userInfoContainer').html('<p>Error loading profile. Please <a href="/User/Login">login</a> again.</p>');
+					}
+				});
+			}
+
+			// Function to get userId from JWT token
+			function getUserIdFromToken() {
+				const token = localStorage.getItem('accessToken');
+				if (!token) return null;
+
+				try {
+					const decoded = jwt_decode(token);
+					return decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+				} catch (e) {
+					console.error('Invalid token', e);
+					return null;
+				}
+			}
+		});
+	</script>
+
+
+
+
+
+
+	@* 
+     <div id="preloder"> 
+         <div class="loader"></div> 
+     </div>  *@
+
+	<section class="blog-details-hero set-bg" data-setbg="img/banner/blog.jpg"
+			 data-setbg="@Url.Content("~/img/banner/blog.jpg")"
+			 style="background-image: url('@Url.Content("/img/banner/blog.jpg")'); background-size: cover; background-position: center;">
+
+		<div class="hero__text ">
+			<span>HOA LAC RIVIU</span>
+			<h2 class="text-white">Reviews Giàu Thông Tin <br />& Trung Thực</h2>
+			<p class="text-white">Góc nhìn mới về ẩm thực Việt Nam </p>
+		</div>
+	</section>
+
+	<div class="row" style="padding : 50px;">
+		<div class="col-lg-9">
+			<section class="featured spad">
+				<div class="container explore-tab">
+					<div class="row">
+
+						<div class="col-lg-12">
+							<div class="title-container">
+								<h2>Khám phá</h2>
+							</div>
+							<div class="show-choice" id="show-choice">
+								<div class="choice-item" id="explore-option">Khám phá</div>
+							</div>
+							<div class="featured__controls">
+								<div style="height: 40px; width: 100%; margin-top: 15px">
+									<ul class="list-group-menu d-flex" style="width: 100%; float: left">
+										<li id="all"><a href="homepage">Tất Cả</a></li>
+										<li id="follow"><a href="homepage?action=follow">Theo dõi</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<div id="blogItemList" class="row featured__filter">
+
+
+						<div id="emptyBlogText" class="text-center">
+							<h4 class="empty-text">Không có gì ở đây cả .....</h4>
+						</div>
+
+
+						<div id="blogItem" class="col-lg-3 col-md-4 col-sm-6 mix" style="display:none;">
+							@* <a href="blog-detail.html"> *@
+							<div class="featured__item">
+								<div id="blogFirstImage" class="featured__item__pic">
+									<img src="https://via.placeholder.com/300" alt="">
+								</div>
+
+								<div id="blogInfo" class="blog__item__text">
+									<h5 id="blogTitle" style="text-align: left; margin-left: 20px;"><a href="#">Blog Title</a></h5>
+									<div id="blogUserInfo" style="display: flex; align-items: center; margin-left: 15px">
+										<img src="https://via.placeholder.com/20" style="width: 20px; height: 20px; border-radius: 14px; margin-right: 5px;" alt="Profile Picture">
+										<span id="blogUsername">Username</span>
+
+
+										<div id="blogLikeInfo" style="display: flex; align-items: center; margin-left: 10px;">
+											<i class="fa fa-heart-o" style="margin-left: 10px;"></i>
+											<span id="blogLike">99</span>
+										</div>
+
+
+
+									</div>
+								</div>
+
+							</div>
+							</a>
+						</div>
+
+
+					</div>
+
+					<ul class="listPage"></ul>
+
+				</div>
+			</section>
+		</div>
+
+		<div id="userInfo" class="col-lg-3 col-md-5 order-md-1 order-2" style="padding-left: 50px">
+
+			<div id="userInfoContainer" class="profile-card mt-4">
+				<a href="#">
+					<img id="userImage" src="https://via.placeholder.com/100" alt="User Profile Picture">
+					<h4>Người dùng</h4>
+					<p id="username">UserID</p>
+					<div id="userStat" class="stats">
+						<div id="userTotalBlogCreated"><p>Bài viết</p><p style="font-weight:bold;">10</p></div>
+						<div id="userFollowing"><p>Đang theo dõi</p><p style="font-weight:bold;">5</p></div>
+						<div id="userFollowed"><p>Theo dõi</p><p style="font-weight:bold;">20</p></div>
+					</div>
+				</a>
+			</div>
+
+			<div class="details">
+				<h3 style="font-weight: bold">Đang Trending <i class="fa fa-fire"></i></h3>
+				<hr>
+				<a class="tag" href="#">
+					<p><strong>1. #TrendingTag</strong><br><hr></p>
+				</a>
+			</div>
+
+
+		</div>
+	</div>
+
+
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
