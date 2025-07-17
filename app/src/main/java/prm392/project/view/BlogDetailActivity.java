@@ -25,6 +25,8 @@ import com.google.gson.Gson;
 import prm392.project.R;
 import prm392.project.adapter.ImageCarouselAdapter;
 import prm392.project.model.Blog;
+import prm392.project.model.Bookmark;
+import prm392.project.model.DTOs.BookmarksResponse;
 import prm392.project.model.User;
 import prm392.project.repo.BlogRepository;
 import prm392.project.repo.ProfileRepository;
@@ -102,6 +104,24 @@ public class BlogDetailActivity extends AppCompatActivity implements OnMapReadyC
                     return;
                 }
                 int userId = Integer.parseInt(response.body().getUserID());
+                profileRepository.getBookmarks(userId, 1, 99999).enqueue(new Callback<BookmarksResponse>() {
+                    @Override
+                    public void onResponse(Call<BookmarksResponse> call, Response<BookmarksResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            List<Bookmark> bookmarks = response.body().getBookmarks();
+                            isBookmarked = false;
+                            for (Bookmark b : bookmarks) {
+                                if (b.getBlogId() == tmpBlog.getBlogId()) {
+                                    isBookmarked = true;
+                                    break;
+                                }
+                            }
+                            updateBookmarkButton();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<BookmarksResponse> call, Throwable t) { }
+                });
 
                 btnBookmark.setOnClickListener(v -> {
                     if (!isBookmarked) {
