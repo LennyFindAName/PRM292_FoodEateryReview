@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="start"
+    android:padding="4dp">
+
+    <ImageView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/ic_avatar_robot"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="avatar"/>
+
+    <TextView
+        android:id="@+id/text_typing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chatbot đang trả lời..."
+        android:textColor="#888888"
+        android:textSize="16sp"
+        android:background="@drawable/bg_bot_message"
+        android:padding="12dp"/>
+</LinearLayout> 

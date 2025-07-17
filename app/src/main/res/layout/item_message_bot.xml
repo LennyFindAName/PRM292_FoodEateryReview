@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="start"
+    android:padding="4dp">
+
+    <ImageView
+        android:id="@+id/image_avatar"
+        android:layout_width="39dp"
+        android:layout_height="58dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="avatar"
+        android:src="@drawable/ic_avatar_robot" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="start">
+
+        <TextView
+            android:id="@+id/text_sender_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chatbot"
+            android:textColor="#888888"
+            android:textSize="12sp"
+            android:gravity="start"/>
+
+        <TextView
+            android:id="@+id/text_message_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_bot_message"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:maxWidth="260dp"/>
+    </LinearLayout>
+</LinearLayout> 
